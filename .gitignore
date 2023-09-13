@@ -1,2 +1,5 @@
 # ignore dependency folder
 venv
+
+# ignore pycache folders
+__pycache__/
