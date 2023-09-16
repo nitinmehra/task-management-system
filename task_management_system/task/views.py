@@ -64,6 +64,7 @@ class TaskView(APIView):
 			exception = ResponseSerializer.handleExceptions(ex)
 			return ResponseSerializer.apiResponseFormat(False, exception['code'], exception['errorMsg'], [])
 		
+	# get task details and task list
 	def get(self, request, *args, **kwargs):
 		try:
 			taskId = kwargs.get('id', None)
@@ -72,7 +73,7 @@ class TaskView(APIView):
 				taskInstance = Task.objects.get(id=taskId)
 
 				if taskInstance is None:
-						return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
+					return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
 
 				taskData = TaskResponseSerializer(taskInstance).data
 					
@@ -90,3 +91,26 @@ class TaskView(APIView):
 			exception = ResponseSerializer.handleExceptions(ex)
 			return ResponseSerializer.apiResponseFormat(False, exception['code'], exception['errorMsg'], [])
 		
+	# delete task
+	def delete(self, request, *args, **kwargs):
+		try:
+			taskId = kwargs.get('id', None)
+			# taskData = []
+			if taskId:
+				taskInstance = Task.objects.get(id=taskId)
+
+				if taskInstance is None:
+					return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
+
+				res = Task.objects.get(id=taskId).delete()
+				if res:
+					return ResponseSerializer.apiResponseFormat(status=True, msg=commonMsg.DELETED_SUCCESSFULLY, data={})
+				else:
+					return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.UNABLE_TO_DELETE, data=None)
+			
+			else:
+				return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data=None)
+					
+		except Exception as ex:
+			exception = ResponseSerializer.handleExceptions(ex)
+			return ResponseSerializer.apiResponseFormat(False, exception['code'], exception['errorMsg'], [])

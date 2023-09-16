@@ -6,6 +6,8 @@ UNABLE_TO_SAVE = 'Unable to save!'
 SAVED_SUCCESSFULLY = 'Saved successfully!'
 UPDATED_SUCCESSFULLY = 'Updated successfully!'
 INVALID_ID = 'Invalid {} id.'
+DELETED_SUCCESSFULLY = 'Deleted successfully!'
+UNABLE_TO_DELETE = 'Unable to Delete!'
 
 # general messages: END
 
