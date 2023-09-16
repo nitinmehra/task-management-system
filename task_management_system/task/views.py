@@ -21,7 +21,7 @@ class TaskView(APIView):
 			)
 
 			if taskSerializer.is_valid(raise_exception=True):
-				task = taskSerializer.save().__dict__
+				task = TaskResponseSerializer(taskSerializer.save()).data
 				
 				if not task['id']:
 					return ResponseSerializer.apiResponseFormat(status=False, msg=commonMsg.UNABLE_TO_SAVE, data=postData)
