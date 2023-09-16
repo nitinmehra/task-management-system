@@ -21,16 +21,18 @@ Clone this Git repository to your local machine:
 ```bash
 git clone https://github.com/nitinmehra/task-management-system.git
 cd your-repo
+```
 
 ### 2. Create a Virtual Environment
-
+```bash
 python -m venv venv
-source venv/bin/activate 
+source venv/bin/activate
+```
 
 ### 3. Install Project Requirements
-
+```bash
 pip install -r requirements.txt
-
+```
 ### 4. Set Up PostgreSQL
 
 Install PostgreSQL (if not already installed)
@@ -42,19 +44,19 @@ Create a Database and User
     CREATE DATABASE task_management_system;
     CREATE USER root WITH PASSWORD 'root';
     GRANT ALL PRIVILEGES ON DATABASE task_management_system TO root;
-
+```
 Exit the PostgreSQL shell:
 ```bash
     \q
-
+```
 ### 5. Run Migrations
 ```bash
     python manage.py migrate
-
+```
 ### 6. Start the Development Server
 ```bash
     python manage.py runserver
-
+```
 Your project should now be running at http://localhost:8000.
 
 ## Usage
