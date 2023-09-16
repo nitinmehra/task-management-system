@@ -61,15 +61,18 @@ Your project should now be running at http://localhost:8000.
 
 ## Usage
 A postman collection is added in repository
---User API's
+-
+User API's
 -
 -create user
-
 -login user and get token for authentication
-
---Task API's
+-
+#Task API's
+-
 -create Task
+-
 -update Task
+-
 -view Task
 -list Task
 -Delete Task
