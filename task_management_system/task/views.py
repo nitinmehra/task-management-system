@@ -24,6 +24,7 @@ class TaskView(APIView):
 				# partial = True #using this to avoid model fields validations and handling based on mode: add/update
 			)
 
+			# validating data, if success enters in condition else raise the exception
 			if taskSerializer.is_valid(raise_exception=True):
 				task = TaskResponseSerializer(taskSerializer.save()).data
 				
@@ -46,10 +47,11 @@ class TaskView(APIView):
 			postData = request.data.copy()
 			taskId = kwargs.get('id')
 
-			taskInstance = Task.objects.get(id=taskId)
-
-			if not taskInstance:
-				return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID, data=postData)
+			# checking whether the task exist or not
+			try:
+				taskInstance = Task.objects.get(id=taskId)
+			except Task.DoesNotExist:
+				return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
 
 			taskSerializer = TaskSerializer(
 				taskInstance,
@@ -74,14 +76,17 @@ class TaskView(APIView):
 			taskId = kwargs.get('id', None)
 			# taskData = []
 			if taskId:
-				taskInstance = Task.objects.get(id=taskId)
 
-				if taskInstance is None:
+				# checking whether the task exist or not
+				try:
+					taskInstance = Task.objects.get(id=taskId)
+				except Task.DoesNotExist:
 					return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
 
 				taskData = TaskResponseSerializer(taskInstance).data
 					
 			else:
+				# fetching all the records
 				taskInstance = Task.objects.all().order_by('-created_at')
 			
 				if taskInstance is None:
@@ -99,13 +104,15 @@ class TaskView(APIView):
 	def delete(self, request, *args, **kwargs):
 		try:
 			taskId = kwargs.get('id', None)
-			# taskData = []
+			
 			if taskId:
-				taskInstance = Task.objects.get(id=taskId)
-
-				if taskInstance is None:
+				# checking whether the task exist or not
+				try:
+					taskInstance = Task.objects.get(id=taskId)
+				except Task.DoesNotExist:
 					return ResponseSerializer.apiResponseFormat(status=False, code=status.HTTP_400_BAD_REQUEST, msg=commonMsg.INVALID_ID.format('task'), data={})
 
+				# if task exist delete it
 				res = Task.objects.get(id=taskId).delete()
 				if res:
 					return ResponseSerializer.apiResponseFormat(status=True, msg=commonMsg.DELETED_SUCCESSFULLY, data={})
