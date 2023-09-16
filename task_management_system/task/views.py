@@ -1,4 +1,6 @@
 from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework.authentication import TokenAuthentication
 from serializers.customResponse import ResponseSerializer
 from task.serializers import TaskSerializer, TaskResponseSerializer
 from common import common_messages as commonMsg
@@ -6,6 +8,8 @@ from task.models import Task
 from rest_framework import status
 
 class TaskView(APIView):
+	authentication_classes = [TokenAuthentication]
+	permission_classes = [permissions.IsAuthenticated]
 
 	# create task
 	def post(self, request):
